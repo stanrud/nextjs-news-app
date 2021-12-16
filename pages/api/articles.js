@@ -1,19 +1,19 @@
-import { articles } from '../../data/articles'
+import { articlesRepo } from '../../helpers/articles-repo'
 
 export default function handler(req, res) {
   const {
-    query: { skip, limit },
+    body,
     method,
   } = req
 
   switch (method) {
     case 'GET':
-      console.log('skip', skip)
-      console.log('limit', limit)
+      const articles = articlesRepo.getAll()
       res.status(200).json(articles)
       break
     case 'POST':
-      res.status(200).json({ message: 'Create a new article' })
+      articlesRepo.create(body)
+      res.status(200).json({ message: 'Successfully created a new article' })
       break
     default:
       res.setHeader('Allow', ['GET', 'POST'])

@@ -1,4 +1,5 @@
 import { articles } from '../../../data/articles'
+import { articlesRepo } from '../../../helpers/articles-repo'
 
 export default function handler(req, res) {
   const {
@@ -8,15 +9,11 @@ export default function handler(req, res) {
 
   switch (method) {
     case 'GET':
-      const article = articles.find(i => i.id === id)
+      const article = articlesRepo.getById(id)
       res.status(200).json(article)
       break
-    case 'POST':
-      // Update or create data in your database
-      res.status(200).json({ id, name: name || `User ${id}` })
-      break
     default:
-      res.setHeader('Allow', ['GET', 'POST'])
+      res.setHeader('Allow', ['GET'])
       res.status(405).end(`Method ${method} Not Allowed`)
   }
 }
