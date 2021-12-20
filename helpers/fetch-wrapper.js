@@ -6,30 +6,24 @@ function get(url) {
 }
 
 async function post(url, imageUrl, body) {
+  let image = ''
   const formData = new FormData()
   formData.append('file', body.image[0])
   formData.append('upload_preset', 'docs_upload_example_us_preset')
 
-  body.image = await fetch(imageUrl, {
+  image = await fetch(imageUrl, {
     method: 'POST',
     body: formData
   })
     .then((response) => response.json())
     .then((data) => data.secure_url)
 
+  body.image = image
+
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
-  }
-  return fetch(url, requestOptions).then(handleResponse)
-}
-
-function put(url, body) {
-  const requestOptions = {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
   }
   return fetch(url, requestOptions).then(handleResponse)
 }
@@ -50,5 +44,4 @@ function handleResponse(response) {
 export const fetchWrapper = {
   get,
   post,
-  put,
 }

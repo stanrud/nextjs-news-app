@@ -38,17 +38,15 @@ export default function Home({ articles }) {
             href='/articles/[id]'
             as={`/articles/${article.id}`}
           >
-            <CardActionArea
-              className='my-4'
-            >
+            <CardActionArea>
               <Card
                 raised={false}
-                className='flex flex-row h-30 md:h-40 shadow-md'
+                className='flex flex-row h-30 md:h-40 shadow-md my-4'
               >
                 <CardMedia
                   component='img'
                   image={article.image}
-                  className='w-32 md:w-60'
+                  style={{ width: '30%' }}
                 />
                 <CardContent>
                   <Typography gutterBottom variant='h6' component='div' className='text-base md:text-lg font-medium md:font-semibold'>
@@ -57,7 +55,7 @@ export default function Home({ articles }) {
                   <Typography variant='caption' component='div' color='text.secondary'>
                     {moment(article.createdAt).format('LL')}
                   </Typography>
-                  <Typography variant='caption' component='div' underline color='text.secondary'>
+                  <Typography variant='caption' component='div' color='text.secondary'>
                     {article.email}
                   </Typography>
                 </CardContent>

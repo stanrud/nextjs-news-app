@@ -74,20 +74,20 @@ export default function AddEdit(props) {
           component='label'
           className='relative w-full my-2 h-96 flex items-center justify-center border-2'
         >
+          <Input
+            type='file'
+            name='image'
+            style={{ display: 'none' }}
+            {...register('image', {
+              onChange: (e) => handleFileChange(e),
+            })}
+          />
           <Image
             src={file ? URL.createObjectURL(file) : imagePlaceholder}
             alt='Article Image'
             layout='fill'
             objectFit='cover'
             className='rounded-lg'
-          />
-          <input
-            hidden
-            type='file'
-            name='image'
-            {...register('image', {
-              onChange: (e) => handleFileChange(e),
-            })}
           />
         </Button>
         <Input

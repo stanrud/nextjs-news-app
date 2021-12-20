@@ -106,7 +106,7 @@ const ResponsiveAppBar = () => {
               <a>
                 <Button
                   onClick={handleCloseNavMenu}
-                  className='text-slate-900 block'
+                  style={{ color: '#343434' }}
                 >
                   Home
                 </Button>
