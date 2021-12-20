@@ -1,34 +1,73 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import * as React from 'react'
+import Card from '@mui/material/Card'
+import CardActionArea from '@mui/material/CardActionArea'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Typography from '@mui/material/Typography'
+import moment from 'moment'
+import Fab from 'components/Fab'
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
+import { articleService } from 'services/article.service'
 
 export default function Home({ articles }) {
-  if (!articles) return <div>Loading...</div>
+  if (!articles) {
+    return (
+      <Box className='flex justify-center items-center'>
+        <CircularProgress />
+      </Box>
+    )
+  }
 
   return (
-    <div className={styles.container}>
+    <div className=''>
       <Head>
         <title>Modern News app</title>
-        <meta name="description" content="Modern News app" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name='description' content='Modern News app' />
+        <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main className={styles.main}>
-        <h1>Articles</h1>
-        <ul>
-          {articles.map((article) => (
-            <article key={article.id}>
-              <Link href="/articles/[id]" as={`/articles/${article.id}`}>
-                  <a>
-                    <h5>{article.title}</h5>
-                  </a>
-              </Link>
-            </article>
-          ))}
-        </ul>
+      <main>
+        {articles.map((article) => (
+          <Link
+            key={article.id}
+            passHref={true}
+            underline='none'
+            href='/articles/[id]'
+            as={`/articles/${article.id}`}
+          >
+            <CardActionArea
+              className='my-4'
+            >
+              <Card
+                raised={false}
+                className='flex flex-row h-30 md:h-40 shadow-md'
+              >
+                <CardMedia
+                  component='img'
+                  image={article.image}
+                  className='w-3/12'
+                />
+                <CardContent>
+                  <Typography gutterBottom variant='h6' component='div' className='text-base md:text-lg font-medium md:font-semibold'>
+                    {article.title}
+                  </Typography>
+                  <Typography variant='caption' color='text.secondary'>
+                    {moment(article.createdAt).format('LL')}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </CardActionArea>
+          </Link>
+        ))}
+        <div className='fixed right-5 bottom-5 sm:bottom-10 sm:right-10'>
+          <Fab />
+        </div>
       </main>
 
-      <footer className={styles.footer}></footer>
+      <footer className=''></footer>
 
     </div>
   )
@@ -36,8 +75,7 @@ export default function Home({ articles }) {
 
 
 export async function getStaticProps(context) {
-  const res = await fetch('http://localhost:3000/api/articles')
-  const articles = await res.json()
+  const articles = await articleService.getAll()
 
   if (!articles) {
     return {

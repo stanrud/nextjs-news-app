@@ -4,11 +4,12 @@ export default function handler(req, res) {
   const {
     body,
     method,
+    query
   } = req
 
   switch (method) {
     case 'GET':
-      const articles = articlesRepo.getAll()
+      const articles = articlesRepo.getAll(query)
       res.status(200).json(articles)
       break
     case 'POST':

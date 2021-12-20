@@ -1,29 +1,50 @@
 import { useRouter } from 'next/router'
-import styles from '../../styles/Home.module.css'
+import Image from 'next/image'
+import CircularProgress from '@mui/material/CircularProgress'
+import { Box } from '@mui/material'
+import { articleService } from 'services/article.service'
 
 export default function Article({ article }) {
   const router = useRouter()
 
   if (router.isFallback) {
-    return <div>Loading...</div>
+    return (
+      <Box className='flex justify-center items-center'>
+        <CircularProgress />
+      </Box>
+    )
   }
 
   if (!article) return <div>Loading...</div>
 
-  return(
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <article key={article.id}>
-          {article.title}
-        </article>
-      </main>
-    </div>
+  return (
+    <article key={article.id} className='mt-5 mx-10 md:mx-0 flex flex-col items-center'>
+      <p className='font-medium md:font-bold text-xl md:text-4xl my-10'>
+        {article.title}
+      </p>
+      {
+        article.image ?
+          <div className='relative w-full h-80 md:h-[62vh]'>
+            <Image
+              src={article.image}
+              alt={article.title}
+              layout='fill'
+              objectFit='cover'
+              loader={() => article.image}
+              className=''
+            />
+          </div> :
+          null
+      }
+      <p className='font-normal my-10 text-base'>
+        {article.body}
+      </p>
+    </article>
   )
 }
 
 export async function getStaticPaths() {
-  const res = await fetch('http://localhost:3000/api/articles')
-  const articles = await res.json()
+  const articles = await articleService.getAll()
 
   const paths = articles.map((article) => ({
     params: { id: article.id.toString() },
@@ -32,9 +53,8 @@ export async function getStaticPaths() {
   return { paths, fallback: false }
 }
 
-export async function getStaticProps({ params }) {
-  const res = await fetch(`http://localhost:3000/api/articles/${params.id}`)
-  const article = await res.json()
+export async function getStaticProps({ params: { id }}) {
+  const article = await articleService.getById(id)
 
   if (!article) {
     return {
