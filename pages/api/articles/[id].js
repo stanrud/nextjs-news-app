@@ -1,7 +1,7 @@
-import { articles } from '../../../data/articles'
-import { articlesRepo } from '../../../helpers/articles-repo'
+import { connectToDatabase } from 'lib/mongodb'
+import { ObjectId } from 'mongodb'
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const {
     query: { id },
     method,
@@ -9,7 +9,11 @@ export default function handler(req, res) {
 
   switch (method) {
     case 'GET':
-      const article = articlesRepo.getById(id)
+      const { db } = await connectToDatabase()
+      const data = await db
+        .collection('news')
+        .findOne({ _id: new ObjectId(id) })
+      const article = JSON.parse(JSON.stringify(data))
       res.status(200).json(article)
       break
     default:

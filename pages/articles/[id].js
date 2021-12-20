@@ -2,7 +2,8 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import CircularProgress from '@mui/material/CircularProgress'
 import { Box } from '@mui/material'
-import { articlesRepo } from 'helpers/articles-repo'
+import { connectToDatabase } from 'lib/mongodb'
+import { ObjectId } from 'mongodb'
 
 export default function Article({ article }) {
   const router = useRouter()
@@ -44,17 +45,32 @@ export default function Article({ article }) {
 }
 
 export async function getStaticPaths() {
-  const articles = await articlesRepo.getAll()
-  
+  const { db } = await connectToDatabase()
+
+  const data = await db
+    .collection('news')
+    .find({})
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .toArray()
+
+  const articles = JSON.parse(JSON.stringify(data))
+
   const paths = articles.map((article) => ({
-    params: { id: article.id.toString() },
+    params: { id: article._id.toString() },
   }))
   
   return { paths, fallback: false }
 }
 
 export async function getStaticProps({ params: { id }}) {
-  const article = await articlesRepo.getById(id)
+  const { db } = await connectToDatabase()
+
+  const data = await db
+    .collection('news')
+    .findOne({ _id: new ObjectId(id) })
+
+  const article = JSON.parse(JSON.stringify(data))
 
   if (!article) {
     return {

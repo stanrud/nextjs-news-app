@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import * as React from 'react'
+import { connectToDatabase } from 'lib/mongodb'
 import Card from '@mui/material/Card'
 import CardActionArea from '@mui/material/CardActionArea'
 import CardContent from '@mui/material/CardContent'
@@ -10,7 +11,6 @@ import moment from 'moment'
 import Fab from 'components/Fab'
 import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
-import { articlesRepo } from 'helpers/articles-repo'
 
 export default function Home({ articles }) {
   if (!articles) {
@@ -32,11 +32,11 @@ export default function Home({ articles }) {
       <main>
         {articles.map((article) => (
           <Link
-            key={article.id}
+            key={article._id}
             passHref={true}
             underline='none'
             href='/articles/[id]'
-            as={`/articles/${article.id}`}
+            as={`/articles/${article._id}`}
           >
             <CardActionArea>
               <Card
@@ -76,7 +76,16 @@ export default function Home({ articles }) {
 
 
 export async function getStaticProps(context) {
-  const articles = await articlesRepo.getAll()
+  const { db } = await connectToDatabase()
+
+  const data = await db
+    .collection('news')
+    .find({})
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .toArray()
+
+  const articles = JSON.parse(JSON.stringify(data))
 
   if (!articles) {
     return {
@@ -88,6 +97,6 @@ export async function getStaticProps(context) {
   }
 
   return {
-    props: { articles },
+    props: { articles: JSON.parse(JSON.stringify(articles)) },
   }
 }
