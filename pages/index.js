@@ -85,9 +85,7 @@ export async function getStaticProps(context) {
     .limit(5)
     .toArray()
 
-  const articles = JSON.parse(JSON.stringify(data))
-
-  if (!articles) {
+  if (!data) {
     return {
       redirect: {
         destination: '/',
@@ -96,7 +94,10 @@ export async function getStaticProps(context) {
     }
   }
 
+  const articles = JSON.parse(JSON.stringify(data))
+
   return {
-    props: { articles: JSON.parse(JSON.stringify(articles)) },
+    props: { articles: articles },
+    unstable_revalidate: 1
   }
 }

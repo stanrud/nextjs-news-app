@@ -54,7 +54,7 @@ export default function AddEdit(props) {
 
   const onSubmit = (data) => {
     return articleService.create(data)
-      .then(() => router.push('/'))
+      .then(() => router.push('.'))
       .catch(e => console.log('error', e))
   }
 

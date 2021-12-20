@@ -70,13 +70,13 @@ export async function getStaticProps({ params: { id }}) {
     .collection('news')
     .findOne({ _id: new ObjectId(id) })
 
-  const article = JSON.parse(JSON.stringify(data))
-
-  if (!article) {
+  if (!data) {
     return {
       notFound: true,
     }
   }
+
+  const article = JSON.parse(JSON.stringify(data))
 
   return { props: { article } }
 }
