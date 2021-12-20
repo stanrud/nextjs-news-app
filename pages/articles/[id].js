@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import CircularProgress from '@mui/material/CircularProgress'
 import { Box } from '@mui/material'
-import { articleService } from 'services/article.service'
+import { articlesRepo } from 'helpers/articles-repo'
 
 export default function Article({ article }) {
   const router = useRouter()
@@ -44,17 +44,17 @@ export default function Article({ article }) {
 }
 
 export async function getStaticPaths() {
-  const articles = await articleService.getAll()
-
+  const articles = await articlesRepo.getAll()
+  
   const paths = articles.map((article) => ({
     params: { id: article.id.toString() },
   }))
-
+  
   return { paths, fallback: false }
 }
 
 export async function getStaticProps({ params: { id }}) {
-  const article = await articleService.getById(id)
+  const article = await articlesRepo.getById(id)
 
   if (!article) {
     return {

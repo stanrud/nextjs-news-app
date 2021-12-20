@@ -10,7 +10,7 @@ import moment from 'moment'
 import Fab from 'components/Fab'
 import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
-import { articleService } from 'services/article.service'
+import { articlesRepo } from 'helpers/articles-repo'
 
 export default function Home({ articles }) {
   if (!articles) {
@@ -54,8 +54,11 @@ export default function Home({ articles }) {
                   <Typography gutterBottom variant='h6' component='div' className='text-base md:text-lg font-medium md:font-semibold'>
                     {article.title}
                   </Typography>
-                  <Typography variant='caption' color='text.secondary'>
+                  <Typography variant='caption' component='div' color='text.secondary'>
                     {moment(article.createdAt).format('LL')}
+                  </Typography>
+                  <Typography variant='caption' component='div' underline color='text.secondary'>
+                    {article.email}
                   </Typography>
                 </CardContent>
               </Card>
@@ -75,7 +78,7 @@ export default function Home({ articles }) {
 
 
 export async function getStaticProps(context) {
-  const articles = await articleService.getAll()
+  const articles = await articlesRepo.getAll()
 
   if (!articles) {
     return {

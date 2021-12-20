@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PROJECT HOLIDUPLICATE
+
+This is my test task project to create a minimal news list to create and view articles
+
+The project was also deployed on the Vercel server for live presentation. [DEMO](https://nextjs-news-app-5y1dgedew-stanrud.vercel.app)
 
 ## Getting Started
 
