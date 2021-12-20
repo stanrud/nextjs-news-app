@@ -1,4 +1,4 @@
-# PROJECT HOLIDUPLICATE
+# PROJECT CLUBEE
 
 This is my test task project to create a minimal news list to create and view articles
 

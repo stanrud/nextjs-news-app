@@ -72,7 +72,7 @@ export default function AddEdit(props) {
       <form onSubmit={handleSubmit(onSubmit)} className='mt-4 w-full'>
         <Button
           component='label'
-          className='relative my-2 h-96 flex items-center justify-center border-2'
+          className='relative w-full my-2 h-96 flex items-center justify-center border-2'
         >
           <Image
             src={file ? URL.createObjectURL(file) : imagePlaceholder}
@@ -81,7 +81,7 @@ export default function AddEdit(props) {
             objectFit='cover'
             className='rounded-lg'
           />
-          <Input
+          <input
             hidden
             type='file'
             name='image'

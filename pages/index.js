@@ -48,7 +48,7 @@ export default function Home({ articles }) {
                 <CardMedia
                   component='img'
                   image={article.image}
-                  className='w-3/12'
+                  className='w-32 md:w-60'
                 />
                 <CardContent>
                   <Typography gutterBottom variant='h6' component='div' className='text-base md:text-lg font-medium md:font-semibold'>
