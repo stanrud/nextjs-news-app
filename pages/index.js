@@ -75,7 +75,7 @@ export default function Home({ articles }) {
 }
 
 
-export async function getStaticProps(context) {
+export const getServerSideProps = async (context) => {
   const { db } = await connectToDatabase()
 
   const data = await db
@@ -97,7 +97,6 @@ export async function getStaticProps(context) {
   const articles = JSON.parse(JSON.stringify(data))
 
   return {
-    props: { articles: articles },
-    revalidate: 1
+    props: { articles: articles }
   }
 }

@@ -44,26 +44,7 @@ export default function Article({ article }) {
   )
 }
 
-export async function getStaticPaths() {
-  const { db } = await connectToDatabase()
-
-  const data = await db
-    .collection('news')
-    .find({})
-    .sort({ createdAt: -1 })
-    .limit(5)
-    .toArray()
-
-  const articles = JSON.parse(JSON.stringify(data))
-
-  const paths = articles.map((article) => ({
-    params: { id: article._id.toString() },
-  }))
-  
-  return { paths, fallback: false }
-}
-
-export async function getStaticProps({ params: { id }}) {
+export async function getServerSideProps({ params: { id }}) {
   const { db } = await connectToDatabase()
 
   const data = await db
