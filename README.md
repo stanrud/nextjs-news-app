@@ -2,7 +2,7 @@
 
 This is my test task project to create a minimal news list to create and view articles
 
-The project was also deployed on the Vercel server for live presentation. [DEMO](https://nextjs-news-app-5y1dgedew-stanrud.vercel.app)
+The project was also deployed on the Vercel server for live presentation. [DEMO](https://nextjs-news-app-tawny.vercel.app)
 
 ## Getting Started
 
